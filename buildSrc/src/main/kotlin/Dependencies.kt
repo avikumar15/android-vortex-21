@@ -17,7 +17,7 @@ object Versions {
     const val navigation = "2.3.0"
     const val material = "1.3.0-alpha02"
     const val circularImageView = "3.1.0"
-    const val storiesProgressView = "3.0.0"
+    //const val storiesProgressView = "3.0.0"
     const val picasso = "2.71828"
 
     /* test */
@@ -57,7 +57,7 @@ object Libs {
 
     const val circularImageView = "de.hdodenhof:circleimageview:${Versions.circularImageView}"
 
-    const val storiesProgressView ="com.github.shts:StoriesProgressView:${Versions.storiesProgressView}"
+    //const val storiesProgressView ="com.github.shts:StoriesProgressView:${Versions.storiesProgressView}"
 
     const val picasso = "com.squareup.picasso:picasso:${Versions.picasso}"
 
@@ -79,7 +79,7 @@ object ModuleLibs {
             Libs.navigationFragmentKtx, Libs.navigationUIKtx,
             Libs.material,
             Libs.circularImageView,
-            Libs.storiesProgressView,
+            //Libs.storiesProgressView,
             Libs.picasso
         )
         val kapts = listOf(Libs.lifecycleCompiler)
