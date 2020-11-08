@@ -12,6 +12,7 @@ import androidx.navigation.fragment.NavHostFragment
 import com.squareup.picasso.Picasso
 import edu.nitt.vortex21.R
 import edu.nitt.vortex21.databinding.FragmentStoryBinding
+import edu.nitt.vortex21.helpers.OnSwipeTouchListener
 import edu.nitt.vortex21.helpers.viewLifecycle
 import edu.nitt.vortex21.storieslibrary.StoriesProgressView
 import edu.nitt.vortex21.model.Story as Story
@@ -34,21 +35,21 @@ class StoryFragment : Fragment(), StoriesProgressView.StoriesListener {
     private var STORY_LIMIT_TIME = 500L
 
     // To pause or skip story
-    private val onTouchListener = View.OnTouchListener { view, motionEvent ->
-        when (motionEvent.action) {
-            MotionEvent.ACTION_DOWN -> {
-                STORY_PRESS_TIME = System.currentTimeMillis()
-                binding.storiesProgress.pause()
-                return@OnTouchListener false
-            }
-            MotionEvent.ACTION_UP -> {
-                val now = System.currentTimeMillis()
-                binding.storiesProgress.resume()
-                return@OnTouchListener STORY_LIMIT_TIME < now - STORY_PRESS_TIME
-            }
-        }
-        false
-    }
+//    private val onTouchListener = View.OnTouchListener { view, motionEvent ->
+//        when (motionEvent.action) {
+//            MotionEvent.ACTION_DOWN -> {
+//                STORY_PRESS_TIME = System.currentTimeMillis()
+//                binding.storiesProgress.pause()
+//                return@OnTouchListener false
+//            }
+//            MotionEvent.ACTION_UP -> {
+//                val now = System.currentTimeMillis()
+//                binding.storiesProgress.resume()
+//                return@OnTouchListener STORY_LIMIT_TIME < now - STORY_PRESS_TIME
+//            }
+//        }
+//        false
+//    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -76,12 +77,59 @@ class StoryFragment : Fragment(), StoriesProgressView.StoriesListener {
 
         // Set onClickListener and onTouchListener
         binding.apply {
-            root.setOnTouchListener(onTouchListener)
+
+            reverse.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+                override fun onSwipeLeft() {
+                    Log.i("Swipe","Left Swiped.")
+                }
+
+                override fun onSwipeRight() {
+                    Log.i("Swipe","Right Swiped.")
+                }
+
+                override fun takeAction() {
+                    binding.storiesProgress.reverse()
+                }
+
+                override fun pauseStory() {
+                    binding.storiesProgress.pause()
+                }
+
+                override fun resumeStory() {
+                    binding.storiesProgress.resume()
+                }
+
+
+            })
+
+            skip.setOnTouchListener(object : OnSwipeTouchListener(requireContext()) {
+                override fun onSwipeLeft() {
+                    Log.i("Swipe","Left Swiped.")
+                }
+
+                override fun onSwipeRight() {
+                    Log.i("Swipe","Right Swiped.")
+                }
+
+                override fun takeAction() {
+                    binding.storiesProgress.skip()
+                }
+
+                override fun pauseStory() {
+                    binding.storiesProgress.pause()
+                }
+
+                override fun resumeStory() {
+                    binding.storiesProgress.resume()
+                }
+
+            })
+
             reverse.setOnClickListener {
-                binding.storiesProgress.reverse()
+
             }
             skip.setOnClickListener {
-                binding.storiesProgress.skip()
+
             }
         }
 
