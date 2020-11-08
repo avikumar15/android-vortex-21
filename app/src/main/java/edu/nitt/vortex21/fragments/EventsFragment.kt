@@ -21,7 +21,6 @@ class EventsFragment : Fragment() {
     private var storyList : MutableList<Story>? = null
     private var storyAdapter : StoryAdapter? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,12 +34,21 @@ class EventsFragment : Fragment() {
         requireActivity().setTitle(R.string.events)
         val linearLayoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
         binding.recyclerViewStory.layoutManager = linearLayoutManager
-
         storyList = ArrayList()
 
         // dummy data.
+        populateData()
 
+        storyAdapter = StoryAdapter(storyList as ArrayList<Story>) {
+                selectedStoryIndex: Int ->
+                listItemClicked(selectedStoryIndex)
+        }
 
+        binding.recyclerViewStory.adapter = storyAdapter
+
+    }
+
+    private fun populateData() {
         for(i in 1..15){
             when {
                 i%3==0 -> storyList!!.add(Story(
@@ -57,17 +65,6 @@ class EventsFragment : Fragment() {
                     "$i", "Story #$i"))
             }
         }
-
-
-
-        storyAdapter = StoryAdapter(requireContext(),
-            storyList as ArrayList<Story>) {
-                selectedStoryIndex: Int ->
-                listItemClicked(selectedStoryIndex)
-        }
-
-        binding.recyclerViewStory.adapter = storyAdapter
-
     }
 
     private fun listItemClicked(index: Int){
@@ -78,4 +75,3 @@ class EventsFragment : Fragment() {
         findNavController().navigate(R.id.action_fragmentEvents_to_storyFragment,bundle)
     }
 }
-
